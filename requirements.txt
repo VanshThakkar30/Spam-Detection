@@ -1,0 +1,10 @@
+# Core data handling and machine learning
+pandas
+scikit-learn
+imbalanced-learn
+numpy
+scipy
+
+# For natural language processing and word embeddings
+spacy
+torch

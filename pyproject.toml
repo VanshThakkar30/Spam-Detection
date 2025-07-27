@@ -1,0 +1,11 @@
+[project]
+name = "spam-detection"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "imbalanced-learn>=0.13.0",
+    "pandas>=2.3.1",
+    "scikit-learn>=1.6.1",
+]

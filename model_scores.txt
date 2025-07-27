@@ -1,0 +1,20 @@
+--- 6. Training Traditional Models ---
+Tuning hyperparameters for RandomForestClassifier...
+Fitting 5 folds for each of 6 candidates, totalling 30 fits
+Best parameters found: {'max_depth': None, 'n_estimators': 200}
+Best F1-score: 0.8551
+
+Tuning hyperparameters for GradientBoostingClassifier...
+Fitting 5 folds for each of 8 candidates, totalling 40 fits
+Best parameters found: {'learning_rate': 0.1, 'max_depth': 3, 'n_estimators': 200}
+Best F1-score: 0.9173
+
+Tuning hyperparameters for SVC...
+Fitting 5 folds for each of 4 candidates, totalling 20 fits
+Best parameters found: {'C': 10, 'kernel': 'linear'}
+Best F1-score: 0.9528
+
+Tuning hyperparameters for LogisticRegression...
+Fitting 5 folds for each of 2 candidates, totalling 10 fits
+Best parameters found: {'C': 10, 'solver': 'liblinear'}
+Best F1-score: 0.9415
