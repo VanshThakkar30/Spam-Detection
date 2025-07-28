@@ -18,3 +18,156 @@ Tuning hyperparameters for LogisticRegression...
 Fitting 5 folds for each of 2 candidates, totalling 10 fits
 Best parameters found: {'C': 10, 'solver': 'liblinear'}
 Best F1-score: 0.9415
+
+--- 1. Loading and Processing Data ---
+--- 2. Cleaning Text and Engineering Features ---
+--- 3. Splitting Data into Training, Validation, and Test Sets ---
+Training set shape: (3285, 11)
+Validation set shape: (822, 11)
+Test set shape: (1027, 11)
+
+--- 4. Vectorizing for Traditional Models ---
+--- 5. Combining Features for Traditional Models ---
+--- 6. Training Traditional Models (SVC & Logistic Regression) ---
+Tuning hyperparameters for SVC...
+Fitting 5 folds for each of 4 candidates, totalling 20 fits
+Best parameters found: {'C': 10, 'kernel': 'linear'}
+Best F1-score: 0.9483
+
+Tuning hyperparameters for LogisticRegression...
+Fitting 5 folds for each of 2 candidates, totalling 10 fits
+Best parameters found: {'C': 10, 'solver': 'liblinear'}
+Best F1-score: 0.9300
+
+Saving model to svm_model.pkl...
+
+--- 7. Preparing Data for PyTorch Model ---
+PyTorch DataLoaders created for training and validation.
+Saving model to logistic_regression_model.pkl...
+
+--- 7. Preparing Data for PyTorch Model ---
+PyTorch DataLoaders created for training and validation.
+
+--- 8. Training PyTorch LSTM Model ---
+Starting PyTorch model training with early stopping...
+Epoch 1/20 | Train Loss: 0.2244 | Validation F1: 0.6479
+Validation F1 improved! Saving model.
+Epoch 2/20 | Train Loss: 0.1040 | Validation F1: 0.7929
+Validation F1 improved! Saving model.
+Epoch 3/20 | Train Loss: 0.0721 | Validation F1: 0.7451
+Validation F1 did not improve. Patience: 1/5
+Epoch 4/20 | Train Loss: 0.0405 | Validation F1: 0.8452
+Validation F1 improved! Saving model.
+Epoch 5/20 | Train Loss: 0.0227 | Validation F1: 0.8409
+Validation F1 did not improve. Patience: 1/5
+Epoch 6/20 | Train Loss: 0.0130 | Validation F1: 0.7925
+Validation F1 did not improve. Patience: 2/5
+Epoch 7/20 | Train Loss: 0.0142 | Validation F1: 0.8047
+Validation F1 did not improve. Patience: 3/5
+Epoch 8/20 | Train Loss: 0.0044 | Validation F1: 0.7853
+Validation F1 did not improve. Patience: 4/5
+Epoch 9/20 | Train Loss: 0.0007 | Validation F1: 0.8000
+Validation F1 did not improve. Patience: 5/5
+Early stopping triggered!
+
+Training complete. Best validation F1-score: 0.8452
+Best LSTM model saved.
+
+--- Full Pipeline Complete ---
+
+
+ensembled
+--- 1. Loading and Processing Data ---
+--- 2. Cleaning Text and Engineering Features ---
+--- 3. Splitting Data into Training, Validation, and Test Sets ---
+Training set shape: (3285, 11)
+Validation set shape: (822, 11)
+Test set shape: (1027, 11)
+
+--- 4. Vectorizing for Traditional Models ---
+C:\Users\vansh\AppData\Local\Programs\Python\Python312\Lib\site-packages\spacy\util.py:922: UserWarning: [W095] Model 'en_core_web_sm' (3.7.1) was trained with spaCy v3.7.2 and may
+ not be 100% compatible with the current version (3.8.7). If you see errors or degraded performance, download a newer compatible model or retrain your custom model with the current spaCy version. For more details and available updates, run: python -m spacy validate
+  warnings.warn(warn_msg)
+--- 5. Combining Features for Traditional Models ---
+--- 6. Training Traditional Models (SVC & Logistic Regression) ---
+Tuning hyperparameters for SVC...
+Fitting 5 folds for each of 4 candidates, totalling 20 fits
+Best parameters found: {'C': 10, 'kernel': 'linear'}
+Best F1-score: 0.9483
+
+Tuning hyperparameters for LogisticRegression...
+Fitting 5 folds for each of 2 candidates, totalling 10 fits
+Best parameters found: {'C': 10, 'solver': 'liblinear'}
+Best F1-score: 0.9300
+
+Saving model to svm_model.pkl...
+Saving model to logistic_regression_model.pkl...
+
+--- 7. Preparing Data for PyTorch Model ---
+
+--- 8. Training PyTorch BiLSTM Model ---
+Starting PyTorch model training with early stopping...
+Epoch 1/20 | Train Loss: 0.2256 | Validation F1: 0.5606
+Validation F1 improved! Saving model.
+Epoch 2/20 | Train Loss: 0.1017 | Validation F1: 0.8095
+Validation F1 improved! Saving model.
+Epoch 3/20 | Train Loss: 0.0606 | Validation F1: 0.8095
+Validation F1 did not improve. Patience: 1/5
+Epoch 4/20 | Train Loss: 0.0268 | Validation F1: 0.8161
+Validation F1 improved! Saving model.
+Epoch 5/20 | Train Loss: 0.0171 | Validation F1: 0.8176
+Validation F1 improved! Saving model.
+Epoch 6/20 | Train Loss: 0.0043 | Validation F1: 0.7771
+Validation F1 did not improve. Patience: 1/5
+Epoch 7/20 | Train Loss: 0.0004 | Validation F1: 0.8171
+Validation F1 did not improve. Patience: 2/5
+Epoch 8/20 | Train Loss: 0.0002 | Validation F1: 0.8193
+Validation F1 improved! Saving model.
+Epoch 9/20 | Train Loss: 0.0001 | Validation F1: 0.8333
+Validation F1 improved! Saving model.
+Epoch 10/20 | Train Loss: 0.0001 | Validation F1: 0.8098
+Validation F1 did not improve. Patience: 1/5
+Epoch 11/20 | Train Loss: 0.0001 | Validation F1: 0.8121
+Validation F1 did not improve. Patience: 2/5
+Epoch 12/20 | Train Loss: 0.0000 | Validation F1: 0.8293
+Validation F1 did not improve. Patience: 3/5
+Epoch 13/20 | Train Loss: 0.0000 | Validation F1: 0.8242
+Validation F1 did not improve. Patience: 4/5
+Epoch 14/20 | Train Loss: 0.0000 | Validation F1: 0.8098
+Validation F1 did not improve. Patience: 5/5
+Early stopping triggered!
+
+Training complete. Best validation F1-score: 0.8333
+Best BiLSTM model saved.
+
+--- 9. Preparing Test Set for Final Evaluation ---
+Test data prepared for evaluation.
+
+--- 10. Building and Evaluating Ensemble Models ---
+Matplotlib is building the font cache; this may take a moment.
+Loading model from logistic_regression_model.pkl...
+Loading model from svm_model.pkl...
+Creating Voting Classifier...
+--- Classification Report for Voting Classifier ---
+              precision    recall  f1-score   support
+
+         Ham       0.99      0.99      0.99       903
+        Spam       0.93      0.90      0.91       124
+
+    accuracy                           0.98      1027
+   macro avg       0.96      0.94      0.95      1027
+weighted avg       0.98      0.98      0.98      1027
+
+Creating Stacking Classifier...
+--- Classification Report for Stacking Classifier ---
+              precision    recall  f1-score   support
+
+         Ham       0.98      0.99      0.98       903
+        Spam       0.91      0.83      0.87       124
+
+    accuracy                           0.97      1027
+   macro avg       0.94      0.91      0.93      1027
+weighted avg       0.97      0.97      0.97      1027
+
+
+--- Full Pipeline Complete ---

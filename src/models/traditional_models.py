@@ -7,22 +7,22 @@ from typing import Dict, Any
 
 # Define the models and their hyperparameter grids for tuning
 MODEL_CONFIG = {
-    "random_forest": {
-        "model": RandomForestClassifier(random_state=42, n_jobs=-1),
-        "params": {
-            "n_estimators": [100, 200],
-            "max_depth": [10, 20, None]
-        }
-    },
-    "gradient_boosting": {
-        "model": GradientBoostingClassifier(random_state=42),
-        "params": {
-            "n_estimators": [100, 200],
-            "learning_rate": [0.05, 0.1],
-            "max_depth": [3, 5]
-        }
-    },
-    "svm": {                                       # <-- SVC is back in
+    # "random_forest": {
+    #     "model": RandomForestClassifier(random_state=42, n_jobs=-1),
+    #     "params": {
+    #         "n_estimators": [100, 200],
+    #         "max_depth": [10, 20, None]
+    #     }
+    # },
+    # "gradient_boosting": {
+    #     "model": GradientBoostingClassifier(random_state=42),
+    #     "params": {
+    #         "n_estimators": [100, 200],
+    #         "learning_rate": [0.05, 0.1],
+    #         "max_depth": [3, 5]
+    #     }
+    # },
+    "svm": {
         "model": SVC(probability=True, random_state=42),
         "params": {
             "C": [1, 10],

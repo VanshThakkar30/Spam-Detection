@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spam Detection API</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Spam Detection Model</h1>
+        <p>Enter a message to classify it as Spam or Ham.</p>
+        <form id="spam-form">
+            <textarea id="message-input" placeholder="Type your message here..." required></textarea>
+            <button type="submit">Classify Message</button>
+        </form>
+        <div id="result-container" class="hidden">
+            <h2>Prediction: <span id="prediction-result"></span></h2>
+            <div class="confidence-scores">
+                <p>Confidence:</p>
+                <span id="ham-score"></span>
+                <span id="spam-score"></span>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

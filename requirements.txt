@@ -2,9 +2,13 @@
 pandas
 scikit-learn
 imbalanced-learn
-numpy
+numpy<2.0
 scipy
+seaborn
+matplotlib
 
 # For natural language processing and word embeddings
 spacy
 torch
+
+flask
