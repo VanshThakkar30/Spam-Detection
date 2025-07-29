@@ -15,7 +15,7 @@ services:
           property: connectionString
 
   # A PostgreSQL Database
-  - type: psql
+  - type: postgres
     name: spam-db
     plan: free # Use the free database instance
     databaseName: spam_db
