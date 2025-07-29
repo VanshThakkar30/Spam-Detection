@@ -1,0 +1,22 @@
+services:
+  # A Web Service for our Flask App
+  - type: web
+    name: spam-detector-api
+    env: python
+    plan: free # Use the free instance type
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn main:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0 # Make sure this matches your Python version
+      - key: DATABASE_URL
+        fromDatabase:
+          name: spam-db # The name of our database service below
+          property: connectionString
+
+  # A PostgreSQL Database
+  - type: psql
+    name: spam-db
+    plan: free # Use the free database instance
+    databaseName: spam_db
+    user: spam_user
