@@ -12,3 +12,9 @@ spacy
 torch
 
 flask
+
+Flask-SQLAlchemy
+psycopg2-binary
+redis
+
+gunicorn

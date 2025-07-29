@@ -22,6 +22,12 @@
                 <span id="spam-score"></span>
             </div>
         </div>
+        <div id="feedback-container" class="hidden">
+            <p>Was this prediction correct?</p>
+            <button id="correct-btn">👍 Correct</button>
+            <button id="incorrect-btn">👎 Incorrect</button>
+        </div>
+        <p id="feedback-thanks" class="hidden">Thank you for your feedback!</p>
     </div>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>

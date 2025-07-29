@@ -1,6 +1,9 @@
 import pickle
 import pandas as pd
 
+from src.database.models import db, PredictionLog
+from flask import current_app
+
 # Import all necessary functions from our project
 from src.data_processing.data_cleaner import clean_text
 from src.data_processing.feature_engineer import extract_features
@@ -64,4 +67,20 @@ def predict_message(message: str) -> dict:
             "spam": round(probability[1], 4)
         }
     }
+    try:
+        new_log = PredictionLog(
+            message=message,
+            prediction=result["prediction"],
+            confidence_spam=result["confidence"]["spam"],
+            confidence_ham=result["confidence"]["ham"]
+        )
+        db.session.add(new_log)
+        db.session.commit()
+        log_id = new_log.id
+    except Exception as e:
+        # If logging fails, roll back the session and print an error
+        db.session.rollback()
+        print(f"Error logging to database: {e}")
+
+    result['log_id'] = log_id
     return result

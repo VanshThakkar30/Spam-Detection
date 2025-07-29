@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.ensemble import StackingClassifier
 
 # Import all necessary functions from our project
 from src.data_processing.data_cleaner import clean_dataframe
@@ -8,17 +9,15 @@ from src.vectorization.tfidf_vectorizer import load_vectorizer
 from src.vectorization.word_embeddings import load_spacy_model, create_sentence_embeddings
 from src.vectorization.feature_combiner import combine_features
 from src.models.traditional_models import load_model, MODEL_CONFIG
-from src.models.ensemble_models import create_voting_classifier
-from src.evaluation.metrics_calculator import plot_confusion_matrix
-from src.evaluation.cross_validator import perform_cross_validation
+from src.evaluation.metrics_calculator import generate_classification_report, plot_confusion_matrix
 
 
 def main():
     """
     Loads trained models, evaluates them on the test set,
-    and performs cross-validation on the training set.
+    and compares them against a Stacking Classifier.
     """
-    print("--- Starting Model Evaluation ---")
+    print("--- Starting Final Model Comparison ---")
 
     # --- 1. Recreate Data Splits ---
     df = pd.read_csv('spam.csv', encoding='latin-1')
@@ -40,54 +39,57 @@ def main():
     y_test = pd.Series(y_test, name='label')
     print("Train and Test sets recreated successfully.")
 
-    # --- 2. Prepare Feature Sets for Both Train and Test ---
+    # --- 2. Prepare Feature Sets ---
     tfidf_vectorizer = load_vectorizer("tfidf_vectorizer.pkl")
     nlp = load_spacy_model()
     engineered_cols = [col for col in X_train.columns if col != 'text']
 
-    # Prepare training features (for cross-validation)
-    X_train_tfidf = tfidf_vectorizer.transform(X_train['text'])
-    X_train_embed = create_sentence_embeddings(X_train['text'].tolist(), nlp)
-    X_train_engineered = X_train[engineered_cols]
-    X_train_final = combine_features(X_train_tfidf, X_train_embed, X_train_engineered)
-
-    # Prepare testing features (for confusion matrix)
-    X_test_tfidf = tfidf_vectorizer.transform(X_test['text'])
-    X_test_embed = create_sentence_embeddings(X_test['text'].tolist(), nlp)
-    X_test_engineered = X_test[engineered_cols]
-    X_test_final = combine_features(X_test_tfidf, X_test_embed, X_test_engineered)
+    X_train_final = combine_features(
+        tfidf_vectorizer.transform(X_train['text']),
+        create_sentence_embeddings(X_train['text'].tolist(), nlp),
+        X_train[engineered_cols]
+    )
+    X_test_final = combine_features(
+        tfidf_vectorizer.transform(X_test['text']),
+        create_sentence_embeddings(X_test['text'].tolist(), nlp),
+        X_test[engineered_cols]
+    )
     print("Train and Test features prepared.")
 
-    # --- 3. Plot Confusion Matrices on Test Data ---
-    print("\n--- Confusion Matrix on Test Set ---")
-    models_to_plot = {
+    # --- 3. Evaluate Individual Models on Test Data ---
+    print("\n--- Evaluating Individual Models on Test Set ---")
+    models_to_evaluate = {
         "SVC": "svm_model.pkl",
         "Logistic Regression": "logistic_regression_model.pkl",
-        "Voting Classifier": "voting_classifier_model.pkl"
     }
-    for model_name, path in models_to_plot.items():
+    for model_name, path in models_to_evaluate.items():
         model = load_model(path)
         predictions = model.predict(X_test_final)
+        generate_classification_report(y_test, predictions, model_name)
         plot_confusion_matrix(y_test, predictions, model_name)
 
-    # --- 4. Perform Cross-Validation on Training Data ---
-    print("\n--- Cross-Validation Performance on Training Set ---")
-    # For cross-validation, we use unfitted models
-    unfitted_svc = MODEL_CONFIG['svm']['model']
-    unfitted_lr = MODEL_CONFIG['logistic_regression']['model']
-    unfitted_voting = create_voting_classifier([
-        ('logistic_regression', unfitted_lr),
-        ('svm', unfitted_svc)
-    ])
+    # --- 4. Train and Evaluate Stacking Classifier ---
+    print("\n--- Training and Evaluating Stacking Classifier ---")
+    # Define the base models (unfitted)
+    estimators = [
+        ('svm', MODEL_CONFIG['svm']['model']),
+        ('logistic_regression', MODEL_CONFIG['logistic_regression']['model'])
+    ]
 
-    models_to_cv = {
-        "SVC": unfitted_svc,
-        "Logistic Regression": unfitted_lr,
-        "Voting Classifier": unfitted_voting
-    }
+    # The Stacking Classifier uses a final model to combine the predictions
+    stacking_model = StackingClassifier(
+        estimators=estimators,
+        final_estimator=MODEL_CONFIG['logistic_regression']['model'],  # Use LR as the meta-learner
+        cv=5
+    )
 
-    for model_name, model in models_to_cv.items():
-        perform_cross_validation(model, X_train_final, y_train)
+    # Train the stacking model on the full training data
+    stacking_model.fit(X_train_final, y_train)
+
+    # Evaluate on the test data
+    stacking_preds = stacking_model.predict(X_test_final)
+    generate_classification_report(y_test, stacking_preds, "Stacking Classifier")
+    plot_confusion_matrix(y_test, stacking_preds, "Stacking Classifier")
 
 
 if __name__ == '__main__':
