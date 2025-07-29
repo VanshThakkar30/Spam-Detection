@@ -8,15 +8,13 @@ services:
     startCommand: "gunicorn main:app"
     envVars:
       - key: PYTHON_VERSION
-        value: 3.12.0 # Make sure this matches your Python version
+        value: 3.12.0
       - key: DATABASE_URL
         fromDatabase:
-          name: spam-db # The name of our database service below
+          name: spam-db
           property: connectionString
 
+databases:
   # A PostgreSQL Database
-  - type: postgres
-    name: spam-db
-    plan: free # Use the free database instance
-    databaseName: spam_db
-    user: spam_user
+  - name: spam-db
+    plan: free
