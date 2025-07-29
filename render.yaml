@@ -3,8 +3,9 @@ services:
   - type: web
     name: spam-detector
     env: python
-    plan: free # Use the free instance type
-    buildCommand: "pip install -r requirements.txt"
+    plan: free
+    # Run the pipeline to create the models, then install requirements
+    buildCommand: "python pipeline.py && pip install -r requirements.txt"
     startCommand: "gunicorn main:app"
     envVars:
       - key: PYTHON_VERSION
