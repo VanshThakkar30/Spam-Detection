@@ -1,7 +1,7 @@
 services:
   # A Web Service for our Flask App
   - type: web
-    name: spam-detector-api
+    name: spam-detector
     env: python
     plan: free # Use the free instance type
     buildCommand: "pip install -r requirements.txt"
