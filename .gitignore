@@ -26,3 +26,5 @@ build/
 spam_detection_modules.md
 evaluate_models.py
 fold_test.py
+
+build/

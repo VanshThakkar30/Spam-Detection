@@ -1,11 +1,11 @@
 services:
-  # A Web Service for our Flask App
   - type: web
     name: spam-detector
     env: python
     plan: free
-    # Run the pipeline to create the models, then install requirements
-    buildCommand: "pip install -r requirements.txt && python pipeline.py"
+    # Added 'set -o pipefail' to make sure errors in the pipeline stop the build
+    buildRoot: .
+    buildCommand: "set -o pipefail && pip install -r requirements.txt && python pipeline.py"
     startCommand: "gunicorn main:app"
     envVars:
       - key: PYTHON_VERSION
@@ -16,6 +16,5 @@ services:
           property: connectionString
 
 databases:
-  # A PostgreSQL Database
   - name: spam-db
     plan: free

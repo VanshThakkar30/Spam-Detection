@@ -87,14 +87,16 @@ def run_final_comparison():
         generate_classification_report(y_test, predictions, name)
         plot_confusion_matrix(y_test, predictions, name)
 
-    # --- 6. Save the Champion Model ---
     print("\n--- 6. Saving the Champion Model ---")
-    # Based on the results, you can choose which model to save.
-    # We'll default to the Stacking Classifier as it's typically more robust.
+    import os
+    # Create the build directory if it doesn't exist
+    os.makedirs("build", exist_ok=True)
+
     champion_model = stacking_model
-    save_model(champion_model, "champion_model.pkl")
-    save_vectorizer(tfidf_vectorizer, "tfidf_vectorizer.pkl")
-    print("Final champion model and vectorizer have been saved.")
+    # Save to the 'build' folder
+    save_model(champion_model, "build/champion_model.pkl")
+    save_vectorizer(tfidf_vectorizer, "build/tfidf_vectorizer.pkl")
+    print("Final champion model and vectorizer have been saved to the 'build' folder.")
 
     print("\n--- Final Comparison Complete ---")
 

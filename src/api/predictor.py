@@ -1,23 +1,21 @@
 import pickle
 import pandas as pd
 
-from src.database.models import db, PredictionLog
-from flask import current_app
-
 # Import all necessary functions from our project
+from src.database.models import db, PredictionLog
 from src.data_processing.data_cleaner import clean_text
 from src.data_processing.feature_engineer import extract_features
 from src.vectorization.word_embeddings import load_spacy_model, create_sentence_embeddings
 from src.vectorization.feature_combiner import combine_features
 
-# --- Load all necessary artifacts once when the server starts ---
+# --- Load all necessary artifacts from the 'build' folder ---
 try:
-    # Load the best model (SVC)
-    with open("svm_model.pkl", "rb") as f:
+    # Load the final champion model
+    with open("build/champion_model.pkl", "rb") as f:
         model = pickle.load(f)
 
-    # Load the TF-IDF vectorizer
-    with open("tfidf_vectorizer.pkl", "rb") as f:
+    # Load the corresponding TF-IDF vectorizer
+    with open("build/tfidf_vectorizer.pkl", "rb") as f:
         tfidf_vectorizer = pickle.load(f)
 
     # Load the spaCy model for embeddings
@@ -67,6 +65,9 @@ def predict_message(message: str) -> dict:
             "spam": round(probability[1], 4)
         }
     }
+    
+    # --- Database Logging ---
+    log_id = None  # Initialize log_id to None
     try:
         new_log = PredictionLog(
             message=message,
@@ -78,7 +79,6 @@ def predict_message(message: str) -> dict:
         db.session.commit()
         log_id = new_log.id
     except Exception as e:
-        # If logging fails, roll back the session and print an error
         db.session.rollback()
         print(f"Error logging to database: {e}")
 
